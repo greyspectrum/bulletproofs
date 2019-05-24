@@ -427,6 +427,8 @@ impl<'t> Verifier<'t> {
         // Create a `TranscriptRng` from the transcript. The verifier
         // has no witness data to commit, so this just mixes external
         // randomness into the existing transcript.
+        #[cfg(feature = "std")]
+        pub fn verify_with_rng() {
         use rand::thread_rng;
         let mut rng = self.transcript.build_rng().finalize(&mut thread_rng());
         let r = Scalar::random(&mut rng);
@@ -434,7 +436,7 @@ impl<'t> Verifier<'t> {
         let xx = x * x;
         let rxx = r * xx;
         let xxx = x * xx;
-
+        }
         // group the T_scalars and T_points together
         let T_scalars = [r * x, rxx * x, rxx * xx, rxx * xxx, rxx * xx * xx];
         let T_points = [proof.T_1, proof.T_3, proof.T_4, proof.T_5, proof.T_6];
