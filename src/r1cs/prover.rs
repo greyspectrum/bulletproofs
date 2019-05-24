@@ -400,8 +400,12 @@ impl<'t, 'g> Prover<'t, 'g> {
                 builder = builder.commit_witness_bytes(b"v_blinding", v_b.as_bytes());
             }
 
+            #[cfg(feature = "std"))]
+            pub fn verify_with_rng() {
+
             use rand::thread_rng;
             builder.finalize(&mut thread_rng())
+            }
         };
 
         // Commit to the first-phase low-level witness variables.
